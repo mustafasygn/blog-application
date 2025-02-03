@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Blog Application API
+  version: "1.0.0"
+  description: API documentation for the Blog Application.
+paths:
+  /blog:
+    get:
+      summary: Retrieve all blog articles.
+      responses:
+        '200':
+          description: A list of articles.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+    post:
+      summary: Create new article
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Article'
+      responses:
+        '302':
+          description: Redirect to article list
+  /blog/{id}:
+    get:
+      summary: Retrieve a single article by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single article.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '404':
+          description: Article not found.
+  /blog/edit/{id}:
+    post:
+      summary: Update an existing article.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Updated article data.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+      responses:
+        '200':
+          description: Article updated successfully.
+        '404':
+          description: Article not found.
+  /blog/{id}/delete:
+    post:
+      summary: Delete an article.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Article deleted successfully.
+        '404':
+          description: Article not found.
+components:
+  schemas:
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "A Sample Title"
+        content:
+          type: string
+          example: "The content of the article goes here."
+        publishDate:
+          type: string
+          format: date-time
+          example: "2023-10-10T12:00:00Z"
+        lastUpdated:
+          type: string
+          format: date-time
+          example: "2023-10-10T12:00:00Z"
+      required:
+        - title
+        - content 

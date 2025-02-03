@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog Articles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .table {
+            margin-top: 20px;
+            background-color: #ffffff;
+        }
+        .table-dark th {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+        .btn-primary, .btn-danger {
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/blog}">Blog Book</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Blog Articles</h2>
+        <!-- NEW: Published Date Filter Form -->
+        <form method="get" action="#" class="mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-auto">
+                    <label for="publishedDate" class="form-label">Published Before</label>
+                    <input type="date" id="publishedDate" name="publishedDate" class="form-control"
+                           th:value="${publishedDate}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+        <a th:href="@{/blog/create}" class="btn btn-primary mb-3">
+            <i class="fas fa-plus-circle"></i> Create New Article
+        </a>
+        <div class="card shadow-sm">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" style="width: 25%">Title</th>
+                        <th scope="col" style="width: 45%">Content</th>
+                        <th scope="col" style="width: 10%">Date</th>
+                        <th scope="col" style="width: 10%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="article : ${articles}">
+                        <td class="align-middle">
+                            <a th:href="@{/blog/{id}(id=${article.id})}"
+                               th:text="${article.title}"
+                               class="text-decoration-underline text-primary"></a>
+                        </td>
+                        <td class="align-middle" th:text="${#strings.abbreviate(article.content, 100)}"></td>
+                        <td class="align-middle">
+                            <small class="text-muted" th:text="${#temporals.format(article.publishDate, 'dd MMM yyyy')}"></small>
+                        </td>
+                        <td class="align-middle">
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/blog/edit/{id}(id=${article.id})}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <!-- Change the form action to "delete" endpoint and use POST method -->
+                                <form th:action="@{/blog/{id}/delete(id=${article.id})}" method="post" class="d-inline">
+                                    <!-- CSRF token -->
+                                    <input type="hidden" th:if="${_csrf != null}"
+                                           th:name="${_csrf.parameterName}" 
+                                           th:value="${_csrf.token}" />
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeo6pIHfW0N0I7bWf3OUlE96LhW8ypcrF6qP7K8F5G5w5n8+" 
+            crossorigin="anonymous"></script>
+</body>
+</html> 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${article.title}">Article Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/blog}">Blog Book</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 th:text="${article.title}"></h2>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    on <span th:text="${#temporals.format(article.publishDate, 'dd MMM yyyy HH:mm')}"></span>
+                </p>
+                <hr>
+                <div th:utext="${article.content}">
+                    <!-- Article content will be inserted here -->
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/blog}" class="btn btn-secondary mt-4">
+            <i class="fas fa-arrow-left"></i> Back to Articles
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeo6pIHfW0N0I7bWf3OUlE96LhW8ypcrF6qP7K8F5G5w5n8+" 
+            crossorigin="anonymous"></script>
+</body>
+</html> 
